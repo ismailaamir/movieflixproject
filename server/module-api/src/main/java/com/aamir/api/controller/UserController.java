@@ -13,6 +13,7 @@ import com.aamir.api.entity.User;
 import com.aamir.api.service.UserService;
 
 @RestController
+@RequestMapping(value = "users")
 public class UserController {
 	
 	@Autowired
@@ -23,7 +24,7 @@ public class UserController {
 		return service.findAll();
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "{/id}")
+	@RequestMapping(method = RequestMethod.GET, value = "{id}")
 	public User findOne(@PathVariable("id") String userId) {
 		return service.findOne(userId);
 
@@ -35,13 +36,13 @@ public class UserController {
 
 	}
 
-	@RequestMapping(method = RequestMethod.PUT, value = "{/id}")
+	@RequestMapping(method = RequestMethod.PUT, value = "{id}")
 	public User update(@PathVariable("id") String userId, @RequestBody User user) {
 		return service.update(userId, user);
 
 	}
 
-	@RequestMapping(method = RequestMethod.DELETE, value = "{/id}")
+	@RequestMapping(method = RequestMethod.DELETE, value = "{id}")
 	public void delete(@PathVariable("id") String userId) {
 		service.delete(userId);
 	}

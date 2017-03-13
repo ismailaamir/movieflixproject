@@ -1,11 +1,29 @@
 package com.aamir.api.entity;
 
+import java.util.UUID;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 @Entity
+@NamedQueries({ @NamedQuery(name = "Movie.findAll", query = "SELECT m FROM Movie m"),
+	@NamedQuery(name = "Movie.findByTopRated", query = "SELECT m FROM Movie m WHERE m.type=:pType ORDER BY m.imdbRating DESC"),
+	@NamedQuery(name = "Movie.findByType", query = "SELECT m FROM Movie m WHERE m.type=:pSearchText "),
+	@NamedQuery(name = "Movie.findByTitle", query = "SELECT m FROM Movie m WHERE m.title =:pSearchText"),
+	@NamedQuery(name = "Movie.findByYear", query = "SELECT m FROM Movie m WHERE m.year=:pSearchText"),
+	@NamedQuery(name = "Movie.findByGenre", query = "SELECT m FROM Movie m WHERE m.genre=:pSearchText"),
+	@NamedQuery(name = "Movie.findByImdbId", query = "SELECT m FROM Movie m where m.imdbId=:pImdbId"),
+	@NamedQuery(name = "Movie.sortByImdbRating", query = "Select m from Movie m WHERE m.type=:pSearchText ORDER BY m.imdbRating DESC"),
+	@NamedQuery(name = "Movie.sortByImdbVotes", query = "Select m from Movie m WHERE m.genre=:pSearchText ORDER BY m.imdbVotes DESC"),
+	@NamedQuery(name = "Movie.sortByImdbYear", query = "Select m from Movie m WHERE m.year=:pSearchText ORDER BY m.year DESC")
+})
 public class Movie {
-
+	@Id
 	private String movieId;
+	@Column(unique = true)
 	private String title;
 	private String year;
 	private String rated;
@@ -23,9 +41,12 @@ public class Movie {
 	private String metascore;
 	private String imdbRating;
 	private String imdbVotes;
+	@Column(unique = true)
 	private String imdbId;
 	private String type;
-
+	public Movie() {
+		this.movieId = UUID.randomUUID().toString();
+	}
 	public String getMovieId() {
 		return movieId;
 	}
@@ -194,5 +215,4 @@ public class Movie {
 				+ ", awards=" + awards + ", poster=" + poster + ", metascore=" + metascore + ", imdbRating="
 				+ imdbRating + ", imdbVotes=" + imdbVotes + ", imdbId=" + imdbId + ", type=" + type + "]";
 	}
-	
 }

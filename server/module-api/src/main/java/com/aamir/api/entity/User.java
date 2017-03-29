@@ -1,14 +1,19 @@
 package com.aamir.api.entity;
 
+import java.util.List;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
+@Table
 @NamedQueries({ @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
 		@NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email=:pEmail") })
 public class User {
@@ -20,7 +25,8 @@ public class User {
 	private String email;
 	private String password;
 	private String mPassword;
-	
+	@OneToMany(mappedBy="user", cascade = CascadeType.ALL)
+	private List<Comment> comment; 
 	public User() {
 		this.id = UUID.randomUUID().toString();
 	}

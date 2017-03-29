@@ -1,14 +1,19 @@
 package com.aamir.api.entity;
 
+import java.util.List;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
+@Table
 @NamedQueries({ @NamedQuery(name = "Movie.findAll", query = "SELECT m FROM Movie m"),
 	@NamedQuery(name = "Movie.findByTopRated", query = "SELECT m FROM Movie m WHERE m.type=:pType ORDER BY m.imdbRating DESC"),
 	@NamedQuery(name = "Movie.findByType", query = "SELECT m FROM Movie m WHERE m.type=:pSearchText "),
@@ -22,6 +27,7 @@ import javax.persistence.NamedQuery;
 })
 public class Movie {
 	@Id
+	@Column(name="MOVIE_ID")
 	private String movieId;
 	@Column(unique = true)
 	private String title;
@@ -44,6 +50,15 @@ public class Movie {
 	@Column(unique = true)
 	private String imdbId;
 	private String type;
+	@OneToMany(mappedBy="movie", cascade = CascadeType.ALL)
+	private List<Comment> comment; 
+	
+	public List<Comment> getComment() {
+		return comment;
+	}
+	public void setComment(List<Comment> comment) {
+		this.comment = comment;
+	}
 	public Movie() {
 		this.movieId = UUID.randomUUID().toString();
 	}
@@ -206,13 +221,15 @@ public class Movie {
 	public void setType(String type) {
 		this.type = type;
 	}
-
 	@Override
 	public String toString() {
 		return "Movie [movieId=" + movieId + ", title=" + title + ", year=" + year + ", rated=" + rated + ", released="
 				+ released + ", runtime=" + runtime + ", genre=" + genre + ", director=" + director + ", writer="
 				+ writer + ", actors=" + actors + ", plot=" + plot + ", language=" + language + ", country=" + country
 				+ ", awards=" + awards + ", poster=" + poster + ", metascore=" + metascore + ", imdbRating="
-				+ imdbRating + ", imdbVotes=" + imdbVotes + ", imdbId=" + imdbId + ", type=" + type + "]";
+				+ imdbRating + ", imdbVotes=" + imdbVotes + ", imdbId=" + imdbId + ", type=" + type + ", comment="
+				+ comment + "]";
 	}
+
+
 }
